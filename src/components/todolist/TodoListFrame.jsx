@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+import Lists from "./Lists";
+
 const TodoListFrame = () => {
   const navigate = useNavigate();
 
@@ -17,7 +19,11 @@ const TodoListFrame = () => {
     checkToken();
   }, []);
 
-  return <>TodoListFrame</>;
+  return (
+    <>
+      <Lists />
+    </>
+  );
 };
 
 export default TodoListFrame;
