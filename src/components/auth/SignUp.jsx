@@ -45,10 +45,17 @@ const SignUp = ({ onClick }) => {
       password: form.password,
     });
 
-    console.log(resp.data);
-    // 응답 받아와서
-    // const { access_token } = resp.data;
-    // localStorage.setItem("AccessToken", access_token);
+    // 응답으로 받아온 토큰 로컬 스토리지 저장
+    const { access_token } = resp.data;
+    localStorage.setItem("AccessToken", access_token);
+
+    const result = window.confirm(
+      "성공적으로 회원가입 되었습니다. 로그인 탭으로 이동하시겠습니까?"
+    );
+
+    if (result) {
+      onClick();
+    }
   };
 
   return (

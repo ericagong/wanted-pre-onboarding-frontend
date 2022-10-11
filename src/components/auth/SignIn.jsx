@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import { apis } from "../../shared/axios";
@@ -13,6 +14,8 @@ const SignUp = ({ onClick }) => {
     passwordErr: true,
   });
 
+  const navigate = useNavigate();
+
   // form input field 값이 변화할 때마다 이를 반영하는 함수
   const changeHandler = (e) => {
     const field = e.target.id;
@@ -26,6 +29,7 @@ const SignUp = ({ onClick }) => {
     }));
   };
 
+  // Assignment 1: 이메일과 비밀번호 유효성 검사 기능
   // 실시간 email, password field 유효성 검사
   const checkErr = (field, value) => {
     if (field === "email") {
@@ -37,6 +41,7 @@ const SignUp = ({ onClick }) => {
     return false;
   };
 
+  // Assignment 2: 로그인 API 호출하고 올바른 응답 받으면 /todo 경로 이동
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -45,10 +50,17 @@ const SignUp = ({ onClick }) => {
       password: form.password,
     });
 
-    console.log(resp.data);
-    // 응답 받아와서
-    // const { access_token } = resp.data;
-    // localStorage.setItem("AccessToken", access_token);
+    // 응답으로 받아온 토큰 로컬 스토리지 저장
+    const { access_token, message } = resp.data;
+    if (!access_token) {
+      window.alert(message);
+      return;
+    }
+
+    // 올바른 응답일시 로컬 스토리지에 토큰 값 저장
+    localStorage.setItem("AccessToken", access_token);
+    // /todo로 이동
+    navigate("/todo");
   };
 
   return (

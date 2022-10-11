@@ -3,8 +3,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL,
   headers: {
-    "content-type": "application/json; charset=UTF-8",
-    accept: "application/json,",
+    "Content-Type": "application/json",
   },
 });
 
