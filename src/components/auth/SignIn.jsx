@@ -1,10 +1,11 @@
 import { useState } from "react";
 import styled from "styled-components";
 
+import { apis } from "../../shared/axios";
 import { ReactComponent as Email } from "../../assets/email.svg";
 import { ReactComponent as Password } from "../../assets/password.svg";
 
-const SignIn = ({ onClick }) => {
+const SignUp = ({ onClick }) => {
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -36,13 +37,23 @@ const SignIn = ({ onClick }) => {
     return false;
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
+
+    const resp = await apis.sign_in({
+      email: form.email,
+      password: form.password,
+    });
+
+    console.log(resp.data);
+    // 응답 받아와서
+    // const { access_token } = resp.data;
+    // localStorage.setItem("AccessToken", access_token);
   };
 
   return (
     <>
-      <div onClick={onClick}>회원가입</div>
+      <StTab onClick={onClick}>회원가입</StTab>
       <div>로그인</div>
       <form onSubmit={submitHandler}>
         <StField hasError={form.emailErr}>
@@ -84,14 +95,28 @@ const SignIn = ({ onClick }) => {
           ) : null}
         </StField>
         <StButton type='submit' disabled={form.emailErr || form.passwordErr}>
-          제출하기
+          회원가입하기
         </StButton>
       </form>
     </>
   );
 };
 
-export default SignIn;
+export default SignUp;
+
+const StTab = styled.div`
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.5px;
+  text-decoration-line: underline;
+  color: #656565;
+  &:hover {
+    cursor: pointer;
+  }
+`;
 
 const StField = styled.div`
   margin-bottom: ${(props) => (!props.hasError ? "26px" : "11px")};
