@@ -1,42 +1,33 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
-import Layout from "../shared/Layout";
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
+import Form from "./Form";
 
 const AuthFrame = () => {
-  const [onSignIn, setOnSignIn] = useState(true);
-
-  const navigate = useNavigate();
-
-  // Assignment 3: 로그인 여부에 따른 리다이렉트 처리
-  const checkToken = () => {
-    if (!localStorage.getItem("AcessToken")) {
-      return;
-    }
-    // 토큰 존재하는 경우 /todo로 리다이렉트
-    navigate("/todo");
-  };
-
-  useEffect(() => {
-    checkToken();
-  }, []);
-
-  // signin, signup 탭 간 전환 함수
-  const toggleTab = (e) => {
-    setOnSignIn((prev) => !prev);
-  };
-
   return (
-    <Layout>
-      {onSignIn ? (
-        <SignIn onClick={toggleTab} />
-      ) : (
-        <SignUp onClick={toggleTab} />
-      )}
-    </Layout>
+    <StLayout>
+      <StForm>
+        <Form />
+      </StForm>
+    </StLayout>
   );
 };
 
 export default AuthFrame;
+
+const StLayout = styled.div`
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background: rgba(236, 236, 236, 1);
+`;
+
+const StForm = styled.div`
+  width: 433px;
+  height: 630px;
+  background: #ffffff;
+  border-radius: 6px;
+  box-shadow: 0px 3px 13px 1px rgba(0, 0, 0, 0.05);
+  padding: 40px 52px;
+`;

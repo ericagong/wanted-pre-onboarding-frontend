@@ -7,7 +7,7 @@ const api = axios.create({
   },
 });
 
-// interceptor 통해 특정 URL로 가는 API 요청 모두에 jwt 헤더에 포함시킴
+// interceptor 통해 로그인/회원가입을 제외한 모든 API 요청에 JWT 헤더에 포함시킴
 api.interceptors.request.use(function (config) {
   if (config.url !== "/auth/signup" && config.url !== "/auth/signin") {
     const auth = localStorage.getItem("Authorization");

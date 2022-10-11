@@ -58,7 +58,9 @@ body {
 	background: #FAFAFA;
 }
 body * {
-	font-family: 'Noto Sans', 'Noto Sans KR', sans-serif;
+	font-family: 'Lobster', cursive;
+	font-family: 'Noto Sans', sans-serif;
+	font-family: 'Noto Sans KR', sans-serif;
 	background-color: transparent;
 }
 a {

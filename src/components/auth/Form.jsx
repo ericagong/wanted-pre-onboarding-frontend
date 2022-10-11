@@ -1,17 +1,42 @@
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import { apis } from "../../shared/axios";
 import { ReactComponent as Email } from "../../assets/email.svg";
 import { ReactComponent as Password } from "../../assets/password.svg";
 
-const SignUp = ({ onClick }) => {
+const Form = (props) => {
+  const navigate = useNavigate();
+
+  // TODO Assignment 3: 로그인 여부에 따른 리다이렉트 처리
+  const checkToken = () => {
+    if (!localStorage.getItem("AcessToken")) {
+      return;
+    }
+    // 토큰 존재하는 경우 /todo로 리다이렉트
+    navigate("/todo");
+  };
+
+  useEffect(() => {
+    checkToken();
+  }, []);
+
+  // 초기 signin 탭에서 시작
+  const [onSignIn, setOnSignIn] = useState(true);
+
+  // form 관련 상태값
   const [form, setForm] = useState({
     email: "",
     password: "",
     emailErr: true,
     passwordErr: true,
   });
+
+  // signin, signup 탭 간 전환 함수
+  const toggleTab = (e) => {
+    setOnSignIn((prev) => !prev);
+  };
 
   // form input field 값이 변화할 때마다 이를 반영하는 함수
   const changeHandler = (e) => {
@@ -26,6 +51,7 @@ const SignUp = ({ onClick }) => {
     }));
   };
 
+  // TODO Assignment 1: 이메일과 비밀번호 유효성 검사 기능
   // 실시간 email, password field 유효성 검사
   const checkErr = (field, value) => {
     if (field === "email") {
@@ -37,31 +63,48 @@ const SignUp = ({ onClick }) => {
     return false;
   };
 
+  // 회원가입하기/ 로그인하기 버튼 클릭 시 처리 함수
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    const resp = await apis.sign_up({
-      email: form.email,
-      password: form.password,
-    });
+    let resp = {};
+    // TODO Assignment 2: 로그인 API 호출하고 올바른 응답 받으면 /todo 경로 이동
+    // 로그인 API 호출
+    if (onSignIn) {
+      resp = await apis.sign_in({
+        email: form.email,
+        password: form.password,
+      });
+    }
+    // 회원 가입 API 호출
+    else {
+      resp = await apis.sign_up({ email: form.email, password: form.password });
+    }
 
     // 응답으로 받아온 토큰 로컬 스토리지 저장
-    const { access_token } = resp.data;
+    const { access_token, message } = resp.data;
+
+    // 잘못된 응답일 시 에러 메시지 alert 형태로 띄움
+    if (!access_token) {
+      window.alert(message);
+      return;
+    }
+
+    // 올바른 응답일시 로컬 스토리지에 토큰 값 저장
     localStorage.setItem("AccessToken", access_token);
 
-    const result = window.confirm(
-      "성공적으로 회원가입 되었습니다. 로그인 탭으로 이동하시겠습니까?"
-    );
-
-    if (result) {
-      onClick();
-    }
+    // /todo로 이동
+    navigate("/todo");
+    return;
   };
 
   return (
     <>
-      <StTab onClick={onClick}>로그인</StTab>
-      <div>회원가입</div>
+      <StLogo>Simple Todos</StLogo>
+      <StHeader>
+        <StTab>{onSignIn ? "로그인" : "회원가입"}</StTab>
+        <StLink onClick={toggleTab}>{onSignIn ? "회원가입" : "로그인"}</StLink>
+      </StHeader>
       <form onSubmit={submitHandler}>
         <StField hasError={form.emailErr}>
           <StLabel htmlFor='email'>이메일</StLabel>
@@ -102,31 +145,59 @@ const SignUp = ({ onClick }) => {
           ) : null}
         </StField>
         <StButton type='submit' disabled={form.emailErr || form.passwordErr}>
-          회원가입하기
+          {onSignIn ? "로그인하기" : "회원가입하기"}
         </StButton>
       </form>
     </>
   );
 };
 
-export default SignUp;
+export default Form;
 
-const StTab = styled.div`
+const StFont = styled.div`
   font-family: "Noto Sans KR";
   font-style: normal;
   font-weight: 500;
+  letter-spacing: -0.5px;
+`;
+
+const StLogo = styled(StFont)`
+  font-family: "Lobster";
+  font-size: 50px;
+  text-align: center;
+  padding: 30px 120px;
+  color: #256ef1;
+`;
+
+const StHeader = styled.header`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0px 30px 0px;
+`;
+
+const StTab = styled(StFont)`
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 20px;
+`;
+
+const StLink = styled(StFont)`
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.5px;
   text-decoration-line: underline;
   color: #656565;
+  transition: all 0.3s;
   &:hover {
     cursor: pointer;
+    color: #256ef1;
+    transform: scale(1.05);
   }
 `;
 
 const StField = styled.div`
-  margin-bottom: ${(props) => (!props.hasError ? "26px" : "11px")};
+  margin-bottom: ${(props) => (!props.hasError ? "36px" : "21px")};
 `;
 
 const StLabel = styled.label`
@@ -139,11 +210,8 @@ const StLabel = styled.label`
   line-height: 20px;
 `;
 
-const StHelper = styled.div`
+const StHelper = styled(StFont)`
   margin-top: 3px;
-  font-family: "Noto Sans KR";
-  font-style: normal;
-  font-weight: 500;
   font-size: 10px;
   line-height: 14px;
   color: #656565;
@@ -174,19 +242,25 @@ const StInput = styled.input`
   &:hover,
   &:focus {
     outline: none;
-    border: 1.2px solid #ffb356;
+    border: 1.2px solid #256ef1;
   }
 `;
 
 const StError = styled(StHelper)`
-  color: #ff5c01;
+  color: #256ef1;
 `;
 
 const StButton = styled.button`
   width: 329px;
   height: 50px;
-  background: ${(props) => (!props.disabled ? "#fc9700" : "#FFEAD8")};
+  background: ${(props) => (!props.disabled ? "#256ef1" : "#a5a5a54a")};
   border: ${(props) =>
-    !props.disabled ? "1px solid #f07401" : "1px solid #FFEAD8"};
+    !props.disabled ? "1px solid #256ef1" : "1px solid #a5a5a54a"};
+  color: #ffffff;
   border-radius: 6px;
+  transition: all 0.3s;
+  &:hover {
+    cursor: ${(props) => (!props.disabled ? "pointer" : "default")};
+    transform: ${(props) => (!props.disabled ? "scale(1.05)" : "none")};
+  }
 `;
