@@ -54,6 +54,9 @@ table {
 * {
 	box-sizing: border-box;
 }
+body {
+	background: #FAFAFA;
+}
 body * {
 	font-family: 'Noto Sans', 'Noto Sans KR', sans-serif;
 	background-color: transparent;

@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import Layout from "../shared/Layout";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 
@@ -12,13 +13,13 @@ const AuthFrame = () => {
   };
 
   return (
-    <>
+    <Layout>
       {onSignIn ? (
         <SignIn onClick={toggleTab} />
       ) : (
         <SignUp onClick={toggleTab} />
       )}
-    </>
+    </Layout>
   );
 };
 
