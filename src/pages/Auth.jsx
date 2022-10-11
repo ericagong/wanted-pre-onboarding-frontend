@@ -1,5 +1,15 @@
+import Header from "../components/shared/Header";
+import AuthFrame from "../components/auth/AuthFrame";
+import Footer from "../components/shared/Footer";
+
 const Auth = () => {
-  return <>Auth</>;
+  return (
+    <>
+      <Header />
+      <AuthFrame />
+      <Footer />
+    </>
+  );
 };
 
 export default Auth;
