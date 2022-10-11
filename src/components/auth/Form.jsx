@@ -11,7 +11,7 @@ const Form = (props) => {
 
   // TODO Assignment 3: 로그인 여부에 따른 리다이렉트 처리
   const checkToken = () => {
-    if (!localStorage.getItem("AcessToken")) {
+    if (!localStorage.getItem("AccessToken")) {
       return;
     }
     // 토큰 존재하는 경우 /todo로 리다이렉트
@@ -82,10 +82,10 @@ const Form = (props) => {
     }
 
     // 응답으로 받아온 토큰 로컬 스토리지 저장
-    const { access_token, message } = resp.data;
+    const { access_token, statusCode, message } = resp.data;
 
     // 잘못된 응답일 시 에러 메시지 alert 형태로 띄움
-    if (!access_token) {
+    if (statusCode === 400) {
       window.alert(message);
       return;
     }
