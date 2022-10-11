@@ -36,11 +36,15 @@ const SignIn = ({ onClick }) => {
     return false;
   };
 
+  const submitHandler = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <>
       <div onClick={onClick}>회원가입</div>
       <div>로그인</div>
-      <form>
+      <form onSubmit={submitHandler}>
         <StField hasError={form.emailErr}>
           <StLabel htmlFor='email'>이메일</StLabel>
           <StHelper>@을 포함한 형태의 이메일을 기입해주세요.</StHelper>
