@@ -10,6 +10,7 @@ const AuthFrame = () => {
 
   const navigate = useNavigate();
 
+  // Assignment 3: 로그인 여부에 따른 리다이렉트 처리
   const checkToken = () => {
     if (!localStorage.getItem("AcessToken")) {
       return;
