@@ -8,19 +8,29 @@ const api = axios.create({
 });
 
 // interceptor 통해 로그인/회원가입을 제외한 모든 API 요청에 JWT 헤더에 포함시킴
-api.interceptors.request.use(function (config) {
-  if (config.url !== "/auth/signup" && config.url !== "/auth/signin") {
-    const auth = localStorage.getItem("AccessToken");
-    config.headers.Authorization = `Bearer ${auth}`;
+api.interceptors.request.use(
+  function (config) {
+    if (config.url !== "/auth/signup" && config.url !== "/auth/signin") {
+      const auth = localStorage.getItem("AccessToken");
+      config.headers.Authorization = `Bearer ${auth}`;
+      return config;
+    }
     return config;
+  },
+  function (error) {
+    return Promise.reject(error);
   }
-  return config;
-});
+);
 
-// interceptor 통해 로그인/회원가입을 제외한 모든 API 요청에 JWT 헤더에 포함시킴
-// api.interceptors.response.use(function (config) {
-//   // TODO 전역 에러 처리
-// });
+// interceptor 통해 응답 에러 처리
+api.interceptors.response.use(
+  function (config) {
+    return config;
+  },
+  function (error) {
+    return error.response;
+  }
+);
 
 // 전역 axios 사용
 export const apis = {

@@ -29,8 +29,8 @@ const Form = (props) => {
   const [form, setForm] = useState({
     email: "",
     password: "",
-    emailErr: true,
-    passwordErr: true,
+    emailErr: "",
+    passwordErr: "",
   });
 
   // signin, signup 탭 간 전환 함수
@@ -55,12 +55,12 @@ const Form = (props) => {
   // 실시간 email, password field 유효성 검사
   const checkErr = (field, value) => {
     if (field === "email") {
-      return !value.includes("@");
+      return !value.includes("@") ? "이메일은 @를 반드시 포함해야합니다." : "";
     }
     if (field === "password") {
-      return value.length < 8;
+      return value.length < 8 ? "비밀번호는 반드시 8자 이상이어야합니다" : "";
     }
-    return false;
+    return "";
   };
 
   // 회원가입하기/ 로그인하기 버튼 클릭 시 처리 함수
@@ -82,11 +82,15 @@ const Form = (props) => {
     }
 
     // 응답으로 받아온 토큰 로컬 스토리지 저장
-    const { access_token } = resp.data;
+    const { access_token, statusCode } = resp.data;
 
-    // 잘못된 응답일 시 에러 메시지 alert 형태로 띄움
-    if (!access_token) {
-      window.alert("에러입니다.");
+    // 잘못된 응답일 시 서버 에러 메시지 띄움
+    if (statusCode === 401) {
+      setForm((prev) => ({ ...prev, passwordErr: "잘못된 비밀번호입니다." }));
+      return;
+    }
+    if (statusCode === 404) {
+      setForm((prev) => ({ ...prev, emailErr: "가입되지 않은 이메일입니다." }));
       return;
     }
 
@@ -121,14 +125,12 @@ const Form = (props) => {
               value={form.email}
             />
           </StWrapper>
-          {form.emailErr ? (
-            <StError>이메일은 @를 반드시 포함해야합니다.</StError>
-          ) : null}
+          {form.emailErr ? <StError>{form.emailErr}</StError> : null}
         </StField>
         <StField>
           <StLabel htmlFor='password'>비밀번호</StLabel>
           <StHelper>8자 이상의 비밀번호를 기입해주세요.</StHelper>
-          <StWrapper hasError={form.emailErr}>
+          <StWrapper hasError={form.passwordErr}>
             <StIcon>
               <Password />
             </StIcon>
@@ -140,9 +142,7 @@ const Form = (props) => {
               value={form.password}
             />
           </StWrapper>
-          {form.passwordErr ? (
-            <StError>비밀번호는 반드시 8자 이상이어야합니다.</StError>
-          ) : null}
+          {form.passwordErr ? <StError>{form.passwordErr}</StError> : null}
         </StField>
         <StButton type='submit' disabled={form.emailErr || form.passwordErr}>
           {onSignIn ? "로그인하기" : "회원가입하기"}
