@@ -1,92 +1,73 @@
 import styled from "styled-components";
 import React from "react";
-import { Link } from "react-router-dom";
 
 // id 기반 상세 페이지 전환 라우터 연결하기!
-const Todo = ({ id, title, contents, isDone }) => {
-  // const dispatch = useDispatch();
-  const payload = { id };
-
-  const toggleHandler = () => {
-    console.log("toggle!");
-    // dispatch(updateTodo(payload));
-  };
-
-  const deleteHandler = () => {
-    console.log("deleted");
-    // dispatch(removeTodo(payload));
-  };
-
+const Todo = ({ id, todo, isCompleted, userId, updateTodo, deleteTodo }) => {
   return (
-    <StyledBox>
-      <StyledLink to={`/about/${id}`}>Detail</StyledLink>
-      <StyledTitle>
-        {title?.length <= 28 ? title : title?.slice(0, 26).concat("...")}
-      </StyledTitle>
-      <StyledContents>
-        {contents?.length <= 36
-          ? contents
-          : contents?.slice(0, 33).concat("...")}
-      </StyledContents>
-      <StyledWrapper>
-        <StyledButton onClick={deleteHandler} className='todoButton'>
-          Delete
-        </StyledButton>
-        <StyledButton onClick={toggleHandler} className='todoButton'>
-          {!isDone ? "Done" : "Cancel"}
-        </StyledButton>
-      </StyledWrapper>
-    </StyledBox>
+    <StLayout>
+      <StTodo>
+        {todo?.length <= 28 ? todo : todo?.slice(0, 26).concat("...")}
+      </StTodo>
+      <StButtons>
+        <StButton onClick={deleteTodo} className='todoButton'>
+          삭제하기
+        </StButton>
+        <StButton onClick={updateTodo} className='todoButton'>
+          {!isCompleted ? "완료하기" : "미완료하기"}
+        </StButton>
+      </StButtons>
+    </StLayout>
   );
 };
 
 export default Todo;
 
-const StyledBox = styled.div`
-  width: 300px;
+const StLayout = styled.div`
+  grid-column: span 4;
   height: 150px;
   border: 1px solid #eeeeee;
-  padding: 20px;
-  margin: 10px 10px;
+  border-radius: 6px;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
-`;
 
-const StyledLink = styled(Link)`
-  padding-left: 250px;
-  font-size: 13px;
-  text-decoration: none;
-  color: #256ef1;
-  &:hover {
-    text-decoration: underline;
+  padding: 0px 20px;
+
+  /* mobile */
+  @media all and (max-width: 700px) {
+    grid-column: span 4;
   }
 `;
 
-const StyledTitle = styled.h3`
-  padding: 0px 10px;
+const StTodo = styled.div`
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1rem;
+  letter-spacing: -0.5px;
+  margin-bottom: 20px;
 `;
 
-const StyledContents = styled.div`
-  padding: 10px 10px;
-`;
-
-const StyledWrapper = styled.div`
-  padding: 10px 0px;
+const StButtons = styled.div`
   display: flex;
-  justify-content: space-around;
+  gap: 10px;
 `;
 
-const StyledButton = styled.button`
-  width: 130px;
-  background-color: #eeeeee;
+const StButton = styled.button`
+  width: calc(100% - 60px - 10px);
+  min-width: 65px;
+  height: 30px;
+  background: #f3f3f3;
   color: black;
   border: none;
-  border-radius: 5px;
-  height: 30px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  transition: all 0.3s;
   &:hover {
-    background-color: #256ef1;
-    color: white;
-    transform: scale(1.1);
+    cursor: pointer;
+    transform: scale(1.05);
+    background: #256ef1;
+    color: #ffffff;
   }
 `;

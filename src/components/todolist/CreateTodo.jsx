@@ -17,6 +17,7 @@ const CreateTodo = ({ createTodo }) => {
 
     createTodo({ todo });
 
+    // form 초기화
     setTodo("");
   };
 

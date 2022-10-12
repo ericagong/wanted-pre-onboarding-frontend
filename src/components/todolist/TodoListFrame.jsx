@@ -59,7 +59,7 @@ const TodoListFrame = () => {
   return (
     <StLayout>
       <CreateTodo createTodo={addTodo} />
-      {/* <Lists updateTodo={updateTodo} deleteTodo={deleteTodo} /> */}
+      <Lists todos={todos} updateTodo={updateTodo} deleteTodo={deleteTodo} />
     </StLayout>
   );
 };
