@@ -9,7 +9,7 @@ const Lists = ({ todos, updateTodo, deleteTodo }) => {
   return (
     <>
       <StSection>
-        <StCategory>진행 중..🔥</StCategory>
+        <StCategory>Working...🔥</StCategory>
         <List
           list={workingList}
           updateTodo={updateTodo}
@@ -17,7 +17,7 @@ const Lists = ({ todos, updateTodo, deleteTodo }) => {
         />
       </StSection>
       <StSection>
-        <StCategory>완료..!🎉</StCategory>
+        <StCategory>Done..! 🎉</StCategory>
         <List list={doneList} updateTodo={updateTodo} deleteTodo={deleteTodo} />
       </StSection>
     </>
