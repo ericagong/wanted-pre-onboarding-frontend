@@ -36,6 +36,14 @@ const Form = (props) => {
   // signin, signup 탭 간 전환 함수
   const toggleTab = (e) => {
     setOnSignIn((prev) => !prev);
+
+    // 초기화
+    setForm({
+      email: "",
+      password: "",
+      emailErr: "",
+      passwordErr: "",
+    });
   };
 
   // form input field 값이 변화할 때마다 이를 반영하는 함수
@@ -84,7 +92,6 @@ const Form = (props) => {
     // 응답으로 받아온 토큰 로컬 스토리지 저장
     const { access_token, statusCode } = resp.data;
 
-    console.log(resp.data);
     // 잘못된 응답일 시 서버 에러 메시지 띄움
     if (statusCode === 400) {
       setForm((prev) => ({ ...prev, emailErr: "이미 가입된 이메일입니다." }));

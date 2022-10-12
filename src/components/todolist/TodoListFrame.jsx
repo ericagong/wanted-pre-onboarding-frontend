@@ -31,7 +31,6 @@ const TodoListFrame = () => {
   const updateTodo = async ({ id, todo, isCompleted }) => {
     const resp = await apis.update_todo({ id, todo, isCompleted });
     const updatedTodo = resp.data;
-    console.log(updatedTodo);
     setTodos((prev) =>
       prev.map((item) => (item.id === updatedTodo.id ? updatedTodo : item))
     );

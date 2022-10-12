@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import styled from "styled-components";
 
+// TODO assignment 5 todo 수정 기능 구현
 const UpdateTodo = ({
   id,
   todo,
@@ -38,8 +39,6 @@ const UpdateTodo = ({
     updateTodo({ id, todo: form.todo, isCompleted: form.isCompleted });
     toggleUpdate();
   };
-
-  console.log(form.hasError);
 
   return (
     <>
