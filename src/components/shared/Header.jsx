@@ -13,7 +13,7 @@ export default Header;
 
 const StLayout = styled.header`
   width: 100vw;
-  height: 8vh;
+  height: 60px;
 
   display: flex;
   flex-direction: row;
