@@ -2,50 +2,38 @@ import styled from "styled-components";
 
 import { useState } from "react";
 
-const CreateTodo = (props) => {
-  const [form, setForm] = useState({ title: "", content: "" });
+const CreateTodo = ({ createTodo }) => {
+  const [todo, setTodo] = useState("");
 
   // input field의 변경 내용 반영
   const changeHandler = (e) => {
-    const field = e.target.id;
     const value = e.target.value;
-    setForm((prev) => ({ ...prev, [field]: value }));
+    setTodo(value);
   };
 
   // 사용자가 제출 버튼을 눌렀을 때 신규 todo를 추가하는 함수
-  const submitHandler = (event) => {
-    event.preventDefault();
+  const submitHandler = (e) => {
+    e.preventDefault();
 
-    setForm({ title: "", content: "" });
+    createTodo({ todo });
+
+    setTodo("");
   };
 
   return (
     <StForm onsubmit={submitHandler}>
       <StField>
-        <StLabel htmlFor='title'>제목</StLabel>
         <StInput
           type='text'
-          id='title'
-          value={form.title}
+          id='todo'
+          value={todo}
+          placeholder='할 일을 자유롭게 추가해보세요!'
           onChange={changeHandler}
           required
         />
       </StField>
-      <StField>
-        <StLabel htmlFor='contents'>내용</StLabel>
-        <StInput
-          type='text'
-          id='content'
-          value={form.content}
-          onChange={changeHandler}
-          required
-        />
-      </StField>
-      <StButton
-        type='submit'
-        disabled={form.title && form.content ? false : true}
-      >
-        할일 추가하기
+      <StButton type='submit' onClick={submitHandler} disabled={!todo}>
+        추가하기
       </StButton>
     </StForm>
   );
@@ -74,16 +62,6 @@ const StField = styled.div`
   gap: 10px;
 `;
 
-const StLabel = styled.label`
-  font-family: "Noto Sans KR";
-  font-style: normal;
-  letter-spacing: -0.5px;
-  font-weight: 700;
-  font-size: 14px;
-  line-height: 20px;
-  text-align: center;
-`;
-
 const StInput = styled.input`
   background: #ffffff;
   border: 1.2px solid #dadada;
@@ -99,7 +77,7 @@ const StInput = styled.input`
 `;
 
 const StButton = styled.button`
-  width: 100px;
+  width: 90px;
   height: 40px;
   background: ${(props) => (!props.disabled ? "#256ef1" : "#a5a5a54a")};
   border: ${(props) =>

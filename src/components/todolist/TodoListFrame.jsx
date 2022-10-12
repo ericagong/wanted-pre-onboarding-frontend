@@ -11,9 +11,34 @@ const TodoListFrame = () => {
 
   const [todos, setTodos] = useState([]);
 
-  const getTodos = () => {
-    const resp = apis.get_todos();
-    setTodos(resp.data);
+  // todo Create
+  const addTodo = async ({ todo }) => {
+    const resp = await apis.create_todo({ todo });
+    const createdTodo = resp.data;
+
+    setTodos((prev) => [...prev, createdTodo]);
+  };
+
+  // todos Read
+  const getTodos = async () => {
+    const resp = await apis.get_todos();
+    const allTodos = resp.data;
+    setTodos(allTodos);
+  };
+
+  // todo Update
+  const updateTodo = async ({ id, todo, isCompleted }) => {
+    const resp = await apis.update_todo({ id, todo, isCompleted });
+    const updatedTodo = resp.data;
+    setTodos((prev) =>
+      prev.map((item) => (item.id === updatedTodo.id ? updateTodo : item))
+    );
+  };
+
+  // todo Delete
+  const deleteTodo = async ({ id }) => {
+    await apis.delete_todo({ id });
+    setTodos((prev) => prev.filter((item) => item.id !== id));
   };
 
   // Assignment 3: 로그인 여부에 따른 리다이렉트 처리
@@ -33,8 +58,8 @@ const TodoListFrame = () => {
 
   return (
     <StLayout>
-      <CreateTodo />
-      {/* <Lists /> */}
+      <CreateTodo createTodo={addTodo} />
+      {/* <Lists updateTodo={updateTodo} deleteTodo={deleteTodo} /> */}
     </StLayout>
   );
 };
