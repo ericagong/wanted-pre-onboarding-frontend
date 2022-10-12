@@ -27,7 +27,7 @@ export default Todo;
 
 const StLayout = styled.div`
   grid-column: span 4;
-  height: 150px;
+  height: 120px;
   border: 1px solid #eeeeee;
   border-radius: 6px;
 
@@ -58,7 +58,7 @@ const StButtons = styled.div`
 `;
 
 const StButton = styled.button`
-  width: calc(100% - 60px - 10px);
+  width: calc(100% - 40px - 10px);
   min-width: 65px;
   height: 30px;
   background: #f3f3f3;
