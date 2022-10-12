@@ -10,12 +10,17 @@ const api = axios.create({
 // interceptor 통해 로그인/회원가입을 제외한 모든 API 요청에 JWT 헤더에 포함시킴
 api.interceptors.request.use(function (config) {
   if (config.url !== "/auth/signup" && config.url !== "/auth/signin") {
-    const auth = localStorage.getItem("Authorization");
-    config.headers.common["Authorization"] = `Bearer ${auth}`;
+    const auth = localStorage.getItem("AccessToken");
+    config.headers.Authorization = `Bearer ${auth}`;
     return config;
   }
   return config;
 });
+
+// interceptor 통해 로그인/회원가입을 제외한 모든 API 요청에 JWT 헤더에 포함시킴
+// api.interceptors.response.use(function (config) {
+//   // TODO 전역 에러 처리
+// });
 
 // 전역 axios 사용
 export const apis = {
@@ -27,7 +32,7 @@ export const apis = {
 
   // todoList page(/todo)
   create_todo: ({ todo }) => api.post(`/todos`, { todo }),
-  get_todos: () => apis.get(`/todos`),
+  get_todos: () => api.get(`/todos`),
   update_todo: ({ id, todo, isCompleted }) =>
     api.put(`/todos/${id}`, { todo, isCompleted }),
   delete_todo: ({ id }) => api.delete(`/todos/${id}`),

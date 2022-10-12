@@ -82,11 +82,11 @@ const Form = (props) => {
     }
 
     // 응답으로 받아온 토큰 로컬 스토리지 저장
-    const { access_token, statusCode, message } = resp.data;
+    const { access_token } = resp.data;
 
     // 잘못된 응답일 시 에러 메시지 alert 형태로 띄움
-    if (statusCode === 400) {
-      window.alert(message);
+    if (!access_token) {
+      window.alert("에러입니다.");
       return;
     }
 

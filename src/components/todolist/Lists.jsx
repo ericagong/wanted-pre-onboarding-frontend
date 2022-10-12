@@ -1,30 +1,27 @@
 import styled from "styled-components";
 
-import React from "react";
 import List from "./List";
 
-const Lists = (props) => {
-  const allTodos = [];
-
-  const workingList = allTodos.filter((todo) => !todo.isDone);
-  const doneList = allTodos.filter((todo) => todo.isDone);
+const Lists = ({ todos }) => {
+  const workingList = todos.filter((todo) => !todo.isDone);
+  const doneList = todos.filter((todo) => todo.isDone);
   return (
-    <StyledLayout>
-      <StyledContainer>
-        <StyledCategory>Working.. 🔥</StyledCategory>
+    <StLayout>
+      <StContainer>
+        <StCategory>Working.. 🔥</StCategory>
         <List list={workingList}></List>
-      </StyledContainer>
-      <StyledContainer>
-        <StyledCategory>Done..! 🎉</StyledCategory>
+      </StContainer>
+      <StContainer>
+        <StCategory>Done..! 🎉</StCategory>
         <List list={doneList}></List>
-      </StyledContainer>
-    </StyledLayout>
+      </StContainer>
+    </StLayout>
   );
 };
 
 export default Lists;
 
-const StyledLayout = styled.div`
+const StLayout = styled.div`
   display: flex;
   flex-direction: column;
   width: 100vw;
@@ -34,9 +31,9 @@ const StyledLayout = styled.div`
   min-width: 800px;
 `;
 
-const StyledContainer = styled.div``;
+const StContainer = styled.div``;
 
-const StyledCategory = styled.div`
+const StCategory = styled.div`
   margin-top: 10px;
   padding: 10px 10px;
   font-size: 20px;
