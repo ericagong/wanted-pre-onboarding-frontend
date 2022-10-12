@@ -84,7 +84,12 @@ const Form = (props) => {
     // 응답으로 받아온 토큰 로컬 스토리지 저장
     const { access_token, statusCode } = resp.data;
 
+    console.log(resp.data);
     // 잘못된 응답일 시 서버 에러 메시지 띄움
+    if (statusCode === 400) {
+      setForm((prev) => ({ ...prev, emailErr: "이미 가입된 이메일입니다." }));
+      return;
+    }
     if (statusCode === 401) {
       setForm((prev) => ({ ...prev, passwordErr: "잘못된 비밀번호입니다." }));
       return;
