@@ -1,7 +1,7 @@
+import { useState } from "react";
 import styled from "styled-components";
 
-import { useState } from "react";
-
+// TODO Assignment 4: todo 입력창에 입력시 todoList 추가
 const CreateTodo = ({ createTodo }) => {
   const [todo, setTodo] = useState("");
 
