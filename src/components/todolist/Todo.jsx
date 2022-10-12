@@ -2,18 +2,21 @@ import styled from "styled-components";
 import React from "react";
 
 // id 기반 상세 페이지 전환 라우터 연결하기!
-const Todo = ({ id, todo, isCompleted, userId, updateTodo, deleteTodo }) => {
+const Todo = ({ id, todo, isCompleted, updateTodo, deleteTodo }) => {
   return (
     <StLayout>
       <StTodo>
         {todo?.length <= 28 ? todo : todo?.slice(0, 26).concat("...")}
       </StTodo>
       <StButtons>
-        <StButton onClick={deleteTodo} className='todoButton'>
+        <StButton onClick={() => deleteTodo({ id })} className='todoButton'>
           삭제하기
         </StButton>
-        <StButton onClick={updateTodo} className='todoButton'>
-          {!isCompleted ? "완료하기" : "미완료하기"}
+        <StButton
+          onClick={() => updateTodo({ id, todo, isCompleted: !isCompleted })}
+          className='todoButton'
+        >
+          {!isCompleted ? "완료하기" : "되돌리기"}
         </StButton>
       </StButtons>
     </StLayout>
