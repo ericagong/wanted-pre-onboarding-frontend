@@ -10,7 +10,13 @@ const UpdateTodo = ({
   toggleUpdate,
   updateTodo,
 }) => {
-  const [form, setForm] = useState({ id, todo, isCompleted, userId });
+  const [form, setForm] = useState({
+    id,
+    todo,
+    isCompleted,
+    userId,
+    hasError: false,
+  });
 
   // form input field 값이 변화할 때마다 이를 반영하는 함수
   const changeHandler = (e) => {
@@ -19,6 +25,7 @@ const UpdateTodo = ({
     setForm((prev) => ({
       ...prev,
       [field]: value,
+      hasError: !value,
     }));
   };
 
@@ -32,6 +39,8 @@ const UpdateTodo = ({
     toggleUpdate();
   };
 
+  console.log(form.hasError);
+
   return (
     <>
       <StState>
@@ -41,8 +50,13 @@ const UpdateTodo = ({
         </StToggle>
       </StState>
       <StInput value={form.todo} onChange={changeHandler} id='todo' />
+      {form.hasError ? (
+        <StError>수정하기 위해서는 할일을 기입해주셔야해요.</StError>
+      ) : null}
       <StButtons>
-        <StButton onClick={submitHandler}>제출하기</StButton>
+        <StButton onClick={submitHandler} disabled={form.hasError}>
+          제출하기
+        </StButton>
         <StButton onClick={toggleUpdate}>취소하기</StButton>
       </StButtons>
     </>
@@ -104,6 +118,12 @@ const StInput = styled.input`
   }
 `;
 
+const StError = styled(StFont)`
+  font-size: 10px;
+  line-height: 14px;
+  color: #256ef1;
+`;
+
 const StButtons = styled.div`
   display: flex;
   gap: 10px;
@@ -114,15 +134,14 @@ const StButton = styled.button`
   min-width: 65px;
   height: 30px;
   background: #f3f3f3;
-  color: black;
   border: none;
   border-radius: 6px;
   font-size: 0.8rem;
   transition: all 0.3s;
   &:hover {
-    cursor: pointer;
-    transform: scale(1.05);
-    background: #256ef1;
-    color: #ffffff;
+    cursor: ${(props) => (!props.disabled ? "pointer" : "cursor")};
+    transform: ${(props) => (!props.disabled ? "scale(1.05)" : "none")};
+    background: ${(props) => (!props.disabled ? "#256ef1" : "#f3f3f3")};
+    color: ${(props) => (!props.disabled ? "#ffffff" : "none")};
   }
 `;
