@@ -35,7 +35,7 @@ const StLayout = styled.footer`
   bottom: 0%;
 
   width: 100vw;
-  height: 10vh;
+  height: 80px;
 
   display: flex;
   flex-direction: column;

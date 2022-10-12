@@ -69,7 +69,8 @@ export default TodoListFrame;
 
 const StLayout = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 140px);
   background: rgba(236, 236, 236, 0.3);
   padding: 0px 30px;
+  overflow: scroll;
 `;
