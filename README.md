@@ -122,7 +122,8 @@ $ yarn start
 
 
 ### 📝 todo CRUD 기능
-![TodoList Preview](https://user-images.githubusercontent.com/48196721/195369314-b4d8d614-9f10-4d89-886e-9a79be42fbcd.gif)
+![TodoList Preview](https://user-images.githubusercontent.com/48196721/197771087-e0ff4139-76df-4c5b-b2d6-2df9b0433677.gif)
+
 
 [TodoList 페이지 동작방식 설명]
 
